@@ -1,0 +1,200 @@
+{% extends "admin_general/base.html" %}
+
+{% block title %}Crear Nueva Institución - NexoEDU{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='institucion/create.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="create-institution-container">
+    <div class="header-section">
+        <h1 class="page-title">
+            <i class="fas fa-school"></i>
+            Crear Nueva Institución
+        </h1>
+    </div>
+
+    <form method="POST" action="{{ url_for('institucion_create') }}" class="create-institution-form" novalidate>
+        <!-- Información Básica -->
+        <div class="form-section basic-info">
+            <div class="section-header">
+                <h5>
+                    <i class="fas fa-info-circle"></i>
+                    Información Básica
+                </h5>
+            </div>
+            <div class="form-group">
+                <label for="nombre_institucion">Nombre de la Institución</label>
+                <input type="text" id="nombre_institucion" name="nombre_institucion"
+                    value="{{ request.form.nombre_institucion }}" class="form-control" required>
+                <div class="form-text">Mínimo 3 caracteres</div>
+            </div>
+            <div class="form-group">
+                <label for="nit">NIT</label>
+                <input type="text" id="nit" name="nit" value="{{ request.form.nit }}" class="form-control" required>
+                <div class="form-text">Número de Identificación Tributaria (mínimo 9 caracteres)</div>
+            </div>
+        </div>
+
+        <!-- Información de Ubicación -->
+        <div class="form-section location-info">
+            <div class="section-header">
+                <h5>
+                    <i class="fas fa-map-marker-alt"></i>
+                    Información de Ubicación
+                </h5>
+            </div>
+            <div class="form-group">
+                <label for="departamento">Departamento</label>
+                <input type="text" id="departamento" name="departamento" value="{{ request.form.departamento }}"
+                    class="form-control" required>
+                <div class="form-text">Departamento donde se ubica la institución</div>
+            </div>
+            <div class="form-group">
+                <label for="ciudad">Ciudad</label>
+                <input type="text" id="ciudad" name="ciudad" value="{{ request.form.ciudad }}" class="form-control"
+                    required>
+                <div class="form-text">Ciudad donde se ubica la institución</div>
+            </div>
+            <div class="form-group">
+                <label for="direccion">Dirección</label>
+                <input type="text" id="direccion" name="direccion" value="{{ request.form.direccion }}"
+                    class="form-control" required>
+                <div class="form-text">Dirección completa de la institución (mínimo 5 caracteres)</div>
+            </div>
+        </div>
+
+        <!-- Información de Contacto -->
+        <div class="form-section contact-info">
+            <div class="section-header">
+                <h5>
+                    <i class="fas fa-phone"></i>
+                    Información de Contacto
+                </h5>
+            </div>
+            <div class="form-group">
+                <label for="telefono">Teléfono</label>
+                <input type="text" id="telefono" name="telefono" value="{{ request.form.telefono }}"
+                    class="form-control">
+                <div class="form-text">Número de teléfono de la institución (opcional)</div>
+            </div>
+            <div class="form-group">
+                <label for="email_institucional">Email Institucional</label>
+                <input type="email" id="email_institucional" name="email_institucional"
+                    value="{{ request.form.email_institucional }}" class="form-control">
+                <div class="form-text">Correo electrónico institucional (opcional)</div>
+            </div>
+        </div>
+
+        <!-- Botones de acción -->
+        <div class="form-actions">
+            <a href="{{ url_for('institucion_list') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i>
+                Cancelar
+            </a>
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i>
+                Guardar Institución
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Form validation
+        const form = document.querySelector('form');
+        form.addEventListener('submit', function (e) {
+            let isValid = true;
+
+            // Validar nombre
+            const nombre = document.getElementById('nombre_institucion');
+            if (nombre.value.trim().length < 3) {
+                showFieldError(nombre, 'El nombre debe tener al menos 3 caracteres');
+                isValid = false;
+            } else {
+                clearFieldError(nombre);
+            }
+
+            // Validar NIT
+            const nit = document.getElementById('nit');
+            if (nit.value.trim().length < 9) {
+                showFieldError(nit, 'El NIT debe tener al menos 9 caracteres');
+                isValid = false;
+            } else {
+                clearFieldError(nit);
+            }
+
+            // Validar departamento
+            const departamento = document.getElementById('departamento');
+            if (departamento.value.trim().length < 1) {
+                showFieldError(departamento, 'El departamento es requerido');
+                isValid = false;
+            } else {
+                clearFieldError(departamento);
+            }
+
+            // Validar ciudad
+            const ciudad = document.getElementById('ciudad');
+            if (ciudad.value.trim().length < 1) {
+                showFieldError(ciudad, 'La ciudad es requerida');
+                isValid = false;
+            } else {
+                clearFieldError(ciudad);
+            }
+
+            // Validar dirección
+            const direccion = document.getElementById('direccion');
+            if (direccion.value.trim().length < 5) {
+                showFieldError(direccion, 'La dirección debe tener al menos 5 caracteres');
+                isValid = false;
+            } else {
+                clearFieldError(direccion);
+            }
+
+            // Validar email si está presente
+            const email = document.getElementById('email_institucional');
+            if (email.value.trim() !== "") {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email.value)) {
+                    showFieldError(email, 'Ingresa un email válido');
+                    isValid = false;
+                } else {
+                    clearFieldError(email);
+                }
+            }
+
+            if (!isValid) {
+                e.preventDefault();
+            }
+        });
+
+        function showFieldError(field, message) {
+            // Remove existing error
+            clearFieldError(field);
+
+            // Add error styling
+            field.classList.add('is-invalid');
+
+            // Create error message
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'invalid-feedback';
+            errorDiv.textContent = message;
+
+            // Insert after the field
+            field.parentNode.insertBefore(errorDiv, field.nextSibling);
+        }
+
+        function clearFieldError(field) {
+            field.classList.remove('is-invalid');
+            const errorDiv = field.parentNode.querySelector('.invalid-feedback');
+            if (errorDiv) {
+                errorDiv.remove();
+            }
+        }
+    });
+</script>
+{% endblock %}

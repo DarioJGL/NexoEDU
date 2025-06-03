@@ -1,0 +1,150 @@
+{% extends "admin_general/base.html" %}
+
+{% block title %}Lista de Cursos - NexoEDU{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='curso/view.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="course-list-container">
+    <div class="header-container">
+        <h1 class="page-title">Lista de Cursos</h1>
+        <div class="add-course-button">
+            <a href="{{ url_for('curso_create') }}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Agregar Curso
+            </a>
+        </div>
+    </div> <!-- Filtro por categoría -->
+    <div class="filter-container">
+        <div class="form-group">
+            <label for="categoryFilter">Filtrar por categoría:</label>
+            <select id="categoryFilter" class="form-control">
+                <option value="todos">Todas las categorías</option>
+                {% set categorias_unicas = [] %}
+                {% for curso in cursos %}
+                {% if curso.categoria and curso.categoria not in categorias_unicas %}
+                {% set _ = categorias_unicas.append(curso.categoria) %}
+                {% endif %}
+                {% endfor %}
+                {% for categoria in categorias_unicas %}
+                <option value="{{ categoria }}">{{ categoria }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="difficultyFilter">Filtrar por dificultad:</label>
+            <select id="difficultyFilter" class="form-control">
+                <option value="todos">Todas las dificultades</option>
+                <option value="Básico">Basico</option>
+                <option value="Intermedio">Intermedio</option>
+                <option value="Avanzado">Avanzado</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="course-list">
+        {% if cursos %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Título</th>
+                    <th>Categoría</th>
+                    <th>Dificultad</th>
+                    <th>Duración (hrs)</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for curso in cursos %}
+                <tr class="course-row" data-categoria="{{ curso.categoria }}"
+                    data-dificultad="{{ curso.nivel_dificultad }}">
+                    <td>{{ curso.id_curso }}</td>
+                    <td>
+                        <div class="course-title-cell">
+                            <strong>{{ curso.titulo }}</strong>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="category-badge">{{ curso.categoria }}</span>
+                    </td>
+                    <td>
+                        <span class="difficulty-badge difficulty-{{ curso.nivel_dificultad|lower }}">
+                            {{ curso.nivel_dificultad }}
+                        </span>
+                    </td>
+                    <td>{{ curso.duracion_estimada_horas }}</td>
+                    <td>
+                        {% if curso.activo %}
+                        <span class="status-badge status-active">Activo</span>
+                        {% else %}
+                        <span class="status-badge status-inactive">Inactivo</span>
+                        {% endif %}
+                    </td>
+                    <td class="actions">
+                        <a href="{{ url_for('curso_update', curso_id=curso.id_curso) }}"
+                            class="btn btn-sm btn-warning edit-btn" title="Editar curso" data-id="{{ curso.id_curso }}">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        {% if curso.activo %}
+                        <a href="{{ url_for('curso_delete', curso_id=curso.id_curso) }}"
+                            class="btn btn-sm btn-danger delete-btn" title="Eliminar curso"
+                            data-id="{{ curso.id_curso }}"
+                            onclick="return confirm('¿Está seguro que desea eliminar el curso {{ curso.titulo }}? Esta acción no se puede deshacer.')">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">
+                <i class="fas fa-book-open"></i>
+            </div>
+            <h3>No hay cursos registrados</h3>
+            <p>Comienza creando tu primer curso en la plataforma.</p>
+            <a href="{{ url_for('curso_create') }}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Crear Curso
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const categoryFilter = document.getElementById('categoryFilter');
+        const difficultyFilter = document.getElementById('difficultyFilter');
+        const courseRows = document.querySelectorAll('.course-row');
+
+        function filterCourses() {
+            const selectedCategory = categoryFilter.value;
+            const selectedDifficulty = difficultyFilter.value;
+
+            courseRows.forEach(row => {
+                const courseCategory = row.getAttribute('data-categoria');
+                const courseDifficulty = row.getAttribute('data-dificultad');
+
+                const categoryMatch = selectedCategory === 'todos' || courseCategory === selectedCategory;
+                // Hacer comparación case-insensitive para dificultad
+                const difficultyMatch = selectedDifficulty === 'todos' ||
+                    (courseDifficulty && courseDifficulty.toLowerCase() === selectedDifficulty.toLowerCase());
+
+                if (categoryMatch && difficultyMatch) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        categoryFilter.addEventListener('change', filterCourses);
+        difficultyFilter.addEventListener('change', filterCourses);
+    });
+</script>
+{% endblock %}

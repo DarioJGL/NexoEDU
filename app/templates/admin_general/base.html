@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+
+
+{% block content_bot %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} - NexoEDU Admin</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}">
+    {% block styles %}{% endblock %}
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body class="dashboard-body">
+    <!-- Navegación lateral -->
+    <nav class="dashboard-sidebar">
+        <div class="sidebar-header">
+            <a href="{{ url_for('dashboard_admin_general') }}" class="sidebar-brand">
+                <span class="brand-icon">🎓</span>
+                <span class="brand-text">NexoEDU</span>
+            </a>
+            <button id="sidebarToggle" class="sidebar-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <div class="sidebar-user">
+            <div class="user-avatar">
+                <img src="{{ url_for('static', filename='img/avatars/default-avatar.png') }}" alt="Avatar">
+            </div>
+            <div class="user-info">
+                <h3 class="user-name">{{ user_name }}</h3>
+                <span class="user-role">Administrador General</span>
+            </div>
+        </div>
+
+        <div class="sidebar-nav">
+
+            <div class="sidebar-section">
+                <span class="section-title">ADMINISTRACIÓN</span>
+                <ul class="nav-items">
+                    <li class="nav-item {% if active_page == 'usuarios' %}active{% endif %}">
+                        <a href="{{ url_for('usuario_index') }}">
+                            <i class="fas fa-users"></i>
+                            <span>Usuarios</span>
+                        </a>
+                    </li>
+                    <li class="nav-item {% if active_page == 'instituciones' %}active{% endif %}">
+                        <a href="{{ url_for('institucion_index') }}">
+                            <i class="fas fa-building"></i>
+                            <span>Instituciones</span>
+                        </a>
+                    </li>
+                    <li class="nav-item {% if active_page == 'cursos' %}active{% endif %}">
+                        <a href="{{ url_for('curso_index') }}">
+                            <i class="fas fa-book"></i>
+                            <span>Cursos</span>
+                        </a>
+                    </li>
+                    <li class="nav-item {% if active_page == 'reportes' %}active{% endif %}">
+                        <a href="#" class="disabled-link">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Reportes</span>
+                            <span class="item-badge disabled">Próximamente</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <span class="section-title">CONFIGURACIÓN</span>
+                <ul class="nav-items">
+
+                    <li class="nav-item {% if active_page == 'config' %}active{% endif %}">
+                        <a class="disabled-link" href="#">
+                            <i class="fas fa-cog"></i>
+                            <span>Configuración</span>
+                            <span class="item-badge disabled">Próximamente</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ url_for('logout') }}">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Cerrar Sesión</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <main class="dashboard-content">
+        <!-- Navbar superior -->
+        <nav class="content-navbar">
+            <div class="navbar-left">
+                <button id="menuToggle" class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="navbar-search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Buscar...">
+                </div>
+            </div>
+            <div class="navbar-right">
+                <div class="navbar-item">
+                    <button class="navbar-button">
+                        <i class="far fa-bell"></i>
+                    </button>
+                </div>
+                <div class="navbar-item">
+                    <div class="dropdown">
+                        <button class="dropdown-toggle">
+                            <div class="user-avatar small">
+                                <img src="{{ url_for('static', filename='img/avatars/default-avatar.png') }}"
+                                    alt="Avatar">
+                            </div>
+                            <span class="user-name-short">{{ user_name.split()[0] }}</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Contenido específico de cada página -->
+        <div class="content-wrapper">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <script>
+        // Toggle sidebar
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const menuToggle = document.getElementById('menuToggle');
+        const body = document.body;
+
+        function toggleSidebar() {
+            body.classList.toggle('sidebar-collapsed');
+        }
+
+        sidebarToggle.addEventListener('click', toggleSidebar);
+        menuToggle.addEventListener('click', toggleSidebar);
+
+
+    </script>
+
+    {% block scripts %}{% endblock %}
+</body>
+
+</html>
+{% endblock %}

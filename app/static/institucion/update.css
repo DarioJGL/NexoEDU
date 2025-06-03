@@ -1,0 +1,241 @@
+/* Variables CSS (hereda de index.css) */
+:root {
+    --primary-blue: #0ea5e9;
+    --primary-dark: #0284c7;
+    --secondary-blue: #38bdf8;
+    --accent-green: #10b981;
+    --dark-blue: #0f172a;
+    --gray-dark: #1e293b;
+    --gray-light: #f8fafc;
+    --white: #ffffff;
+    --text-primary: #1f2937;
+    --text-secondary: #6b7280;
+    --border-light: #e5e7eb;
+    --danger-red: #ef4444;
+    --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para la página de actualización de instituciones */
+
+.update-institution-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: var(--white);
+    box-shadow: var(--card-shadow);
+    border-radius: 12px;
+}
+
+.header-section {
+    margin-bottom: 30px;
+    border-bottom: 2px solid var(--border-light);
+    padding-bottom: 15px;
+}
+
+.page-title {
+    color: var(--text-primary);
+    font-size: 1.8rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.page-title i {
+    color: var(--primary-blue);
+}
+
+/* Estructura de formulario */
+.institution-form-container {
+    width: 100%;
+}
+
+.institution-form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+}
+
+@media (min-width: 768px) {
+    .institution-form {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .basic-info {
+        grid-column: span 2;
+    }
+
+    .system-info {
+        grid-column: span 2;
+    }
+
+    .form-actions {
+        grid-column: span 2;
+    }
+}
+
+.form-section {
+    padding: 20px;
+    background-color: var(--gray-light);
+    border-radius: 12px;
+    border: 1px solid var(--border-light);
+}
+
+.section-header {
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.section-header h5 {
+    color: var(--text-primary);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+}
+
+.section-header h5 i {
+    color: var(--primary-blue);
+}
+
+/* Grupos de campos */
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    font-size: 15px;
+    color: var(--text-primary);
+    background-color: var(--white);
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-control:focus {
+    border-color: var(--primary-blue);
+    outline: 0;
+    box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
+}
+
+.form-text {
+    margin-top: 4px;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+/* Información del sistema */
+.info-display {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.info-item {
+    padding: 10px;
+    background-color: var(--white);
+    border-radius: 8px;
+    border: 1px solid var(--border-light);
+}
+
+.info-item strong {
+    color: var(--text-primary);
+}
+
+/* Validación */
+.is-invalid {
+    border-color: var(--danger-red) !important;
+}
+
+.invalid-feedback {
+    display: block;
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 13px;
+    color: var(--danger-red);
+}
+
+/* Botones de acción */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-blue), var(--primary-dark));
+    color: var(--white);
+    box-shadow: 0 4px 15px rgba(14, 165, 233, 0.3);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, var(--primary-dark), var(--primary-blue));
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(14, 165, 233, 0.4);
+}
+
+.btn-secondary {
+    background-color: var(--text-secondary);
+    color: var(--white);
+}
+
+.btn-secondary:hover {
+    background-color: var(--gray-dark);
+    transform: translateY(-2px);
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    .update-institution-container {
+        padding: 15px;
+    }
+
+    .institution-form {
+        grid-template-columns: 1fr;
+    }
+
+    .basic-info,
+    .system-info,
+    .form-actions {
+        grid-column: span 1;
+    }
+
+    .info-display {
+        grid-template-columns: 1fr;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}

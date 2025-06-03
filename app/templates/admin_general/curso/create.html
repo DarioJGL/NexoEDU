@@ -1,0 +1,209 @@
+{% extends "admin_general/base.html" %}
+
+{% block title %}Crear Nuevo Curso - NexoEDU{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='curso/create.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="create-course-container">
+    <div class="header-section">
+        <h1 class="page-title">
+            <i class="fas fa-book-open"></i>
+            Crear Nuevo Curso
+        </h1>
+    </div>
+
+    <form method="POST" action="{{ url_for('curso_create') }}" class="create-course-form" novalidate>
+        <!-- Información Básica -->
+        <div class="form-section basic-info">
+            <div class="section-header">
+                <h5>
+                    <i class="fas fa-info-circle"></i>
+                    Información Básica
+                </h5>
+            </div>
+            <div class="form-group">
+                <label for="titulo">Título del Curso</label>
+                <input type="text" id="titulo" name="titulo" value="{{ request.form.titulo }}" class="form-control"
+                    required>
+                <div class="form-text">Mínimo 3 caracteres</div>
+            </div>
+            <div class="form-group">
+                <label for="descripcion">Descripción</label>
+                <textarea id="descripcion" name="descripcion" class="form-control" rows="4"
+                    required>{{ request.form.descripcion }}</textarea>
+                <div class="form-text">Descripción detallada del curso (mínimo 10 caracteres)</div>
+            </div>
+            <div class="form-group">
+                <label for="categoria">Categoría</label>
+                <input type="text" id="categoria" name="categoria" value="{{ request.form.categoria }}"
+                    class="form-control" required>
+                <div class="form-text">Categoría o área temática del curso</div>
+            </div>
+        </div>
+
+        <!-- Información Académica -->
+        <div class="form-section academic-info">
+            <div class="section-header">
+                <h5>
+                    <i class="fas fa-graduation-cap"></i>
+                    Información Académica
+                </h5>
+            </div>
+            <div class="form-group">
+                <label for="duracion_estimada_horas">Duración Estimada (horas)</label>
+                <input type="number" id="duracion_estimada_horas" name="duracion_estimada_horas"
+                    value="{{ request.form.duracion_estimada_horas }}" class="form-control" min="0.5" step="0.5"
+                    required>
+                <div class="form-text">Duración estimada en horas (debe ser mayor a 0)</div>
+            </div>
+            <div class="form-group">
+                <label for="nivel_dificultad">Nivel de Dificultad</label>
+                <select id="nivel_dificultad" name="nivel_dificultad" class="form-control" required>
+                    <option value="" selected disabled>Seleccionar nivel de dificultad</option>
+                    <option value="Básico" {% if request.form.nivel_dificultad=='Básico' %}selected{% endif %}>Básico
+                    </option>
+                    <option value="Intermedio" {% if request.form.nivel_dificultad=='Intermedio' %}selected{% endif %}>
+                        Intermedio</option>
+                    <option value="Avanzado" {% if request.form.nivel_dificultad=='Avanzado' %}selected{% endif %}>
+                        Avanzado</option>
+                </select>
+                <div class="form-text">Nivel de dificultad del curso</div>
+            </div>
+            <div class="form-group">
+                <label for="competencias_desarrolladas">Competencias Desarrolladas</label>
+                <textarea id="competencias_desarrolladas" name="competencias_desarrolladas" class="form-control"
+                    rows="3" required>{{ request.form.competencias_desarrolladas }}</textarea>
+                <div class="form-text">Competencias y habilidades que se desarrollarán (mínimo 10 caracteres)</div>
+            </div>
+        </div>
+
+        <!-- Información Adicional -->
+        <div class="form-section additional-info">
+            <div class="section-header">
+                <h5>
+                    <i class="fas fa-image"></i>
+                    Información Adicional
+                </h5>
+            </div>
+            <div class="form-group">
+                <label for="imagen_portada">Imagen de Portada</label>
+                <input type="text" id="imagen_portada" name="imagen_portada" value="{{ request.form.imagen_portada }}"
+                    class="form-control">
+                <div class="form-text">Nombre del archivo de imagen (opcional). Ejemplo: curso.jpg</div>
+            </div>
+        </div>
+
+        <!-- Botones de acción -->
+        <div class="form-actions">
+            <a href="{{ url_for('curso_list') }}" class="btn btn-secondary">
+                <i class="fas fa-times"></i>
+                Cancelar
+            </a>
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i>
+                Crear Curso
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.querySelector('.create-course-form');
+
+        form.addEventListener('submit', function (e) {
+            let isValid = true;
+
+            // Limpiar errores previos
+            document.querySelectorAll('.field-error').forEach(error => error.remove());
+            document.querySelectorAll('.form-control.error').forEach(field => field.classList.remove('error'));
+
+            // Validar título
+            const titulo = document.getElementById('titulo');
+            if (titulo.value.trim().length < 3) {
+                showFieldError(titulo, 'El título debe tener al menos 3 caracteres');
+                isValid = false;
+            } else {
+                clearFieldError(titulo);
+            }
+
+            // Validar descripción
+            const descripcion = document.getElementById('descripcion');
+            if (descripcion.value.trim().length < 10) {
+                showFieldError(descripcion, 'La descripción debe tener al menos 10 caracteres');
+                isValid = false;
+            } else {
+                clearFieldError(descripcion);
+            }
+
+            // Validar categoría
+            const categoria = document.getElementById('categoria');
+            if (categoria.value.trim().length < 2) {
+                showFieldError(categoria, 'La categoría es requerida');
+                isValid = false;
+            } else {
+                clearFieldError(categoria);
+            }
+
+            // Validar duración
+            const duracion = document.getElementById('duracion_estimada_horas');
+            const duracionValue = parseFloat(duracion.value);
+            if (isNaN(duracionValue) || duracionValue <= 0) {
+                showFieldError(duracion, 'La duración debe ser un número mayor a 0');
+                isValid = false;
+            } else {
+                clearFieldError(duracion);
+            }
+
+            // Validar nivel de dificultad
+            const nivel = document.getElementById('nivel_dificultad');
+            if (!nivel.value) {
+                showFieldError(nivel, 'Selecciona un nivel de dificultad');
+                isValid = false;
+            } else {
+                clearFieldError(nivel);
+            }
+
+            // Validar competencias
+            const competencias = document.getElementById('competencias_desarrolladas');
+            if (competencias.value.trim().length < 10) {
+                showFieldError(competencias, 'Las competencias deben tener al menos 10 caracteres');
+                isValid = false;
+            } else {
+                clearFieldError(competencias);
+            }
+
+            if (!isValid) {
+                e.preventDefault();
+            }
+        });
+
+        function showFieldError(field, message) {
+            field.classList.add('error');
+
+            // Remover error existente si lo hay
+            const existingError = field.parentNode.querySelector('.field-error');
+            if (existingError) {
+                existingError.remove();
+            }
+
+            // Crear y mostrar nuevo error
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'field-error';
+            errorDiv.textContent = message;
+            field.parentNode.appendChild(errorDiv);
+        }
+
+        function clearFieldError(field) {
+            field.classList.remove('error');
+            const errorDiv = field.parentNode.querySelector('.field-error');
+            if (errorDiv) {
+                errorDiv.remove();
+            }
+        }
+    });
+</script>
+{% endblock %}

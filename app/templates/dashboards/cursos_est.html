@@ -1,0 +1,356 @@
+{% extends "base.html" %}
+{% block content_bot %}
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} - NexoEDU</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='cursos.css') }}">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body class="dashboard-body">
+    <!-- Navegación lateral -->
+    <nav class="dashboard-sidebar">
+        <div class="sidebar-header">
+            <a href="{{ url_for('dashboard') }}" class="sidebar-brand">
+                <span class="brand-icon">🎓</span>
+                <span class="brand-text">NexoEDU</span>
+            </a>
+            <button id="sidebarToggle" class="sidebar-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <div class="sidebar-user">
+            <div class="user-avatar">
+                <img src="{{ url_for('static', filename='img/avatars/default-avatar.png') }}" alt="Avatar">
+            </div>
+            <div class="user-info">
+                <h3 class="user-name">{{ user_name }}</h3>
+                <span class="user-role">Estudiante</span>
+            </div>
+        </div>
+
+        <div class="sidebar-nav">
+            <div class="sidebar-section">
+                <span class="section-title">PRINCIPAL</span>
+                <ul class="nav-items">
+                    <li class="nav-item">
+                        <a href="{{ url_for('dashboard_estudiante') }}">
+                            <i class="fas fa-home"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a href="{{ url_for('cursos_estudiante') }}">
+                            <i class="fas fa-book"></i>
+                            <span>Mis Cursos</span>
+                            <span class="item-badge success">{{ total_cursos }}</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="disabled-link">
+                            <i class="fas fa-calendar"></i>
+                            <span>Calendario</span>
+                            <span class="item-badge disabled">Próximamente</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="disabled-link">
+                            <i class="fas fa-tasks"></i>
+                            <span>Tareas</span>
+                            <span class="item-badge disabled">Próximamente</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- <div class="sidebar-section">
+                <span class="section-title">EXPLORAR</span>
+                <ul class="nav-items">
+                    <li class="nav-item">
+                        <a href="#">
+                            <i class="fas fa-compass"></i>
+                            <span>Catálogo de Cursos</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#">
+                            <i class="fas fa-certificate"></i>
+                            <span>Certificados</span>
+                        </a>
+                    </li>
+                </ul>
+            </div> -->
+
+            <div class="sidebar-section">
+                <span class="section-title">CUENTA</span>
+                <ul class="nav-items">
+                    <li class="nav-item">
+                        <a href="#">
+                            <i class="fas fa-user-circle"></i>
+                            <span>Mi Perfil</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="disabled-link" href="#">
+                            <i class="fas fa-cog"></i>
+                            <span>Configuración</span>
+                            <span class="item-badge disabled">Próximamente</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ url_for('logout') }}">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Cerrar Sesión</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <main class="dashboard-content">
+        <!-- Navbar superior -->
+        <nav class="content-navbar">
+            <div class="navbar-left">
+                <button id="menuToggle" class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="navbar-search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchCourses" placeholder="Buscar cursos...">
+                </div>
+            </div>
+            <div class="navbar-right">
+                <div class="navbar-item">
+                    <button class="navbar-button">
+                        <i class="far fa-bell"></i>
+                        <span class="badge">3</span>
+                    </button>
+                </div>
+                <div class="navbar-item">
+                    <button class="navbar-button">
+                        <i class="far fa-envelope"></i>
+                        <span class="badge">1</span>
+                    </button>
+                </div>
+                <div class="navbar-item">
+                    <div class="dropdown">
+                        <button class="dropdown-toggle">
+                            <div class="user-avatar small">
+                                <img src="{{ url_for('static', filename='img/avatars/default-avatar.png') }}"
+                                    alt="Avatar">
+                            </div>
+                            <span class="user-name-short">{{ user_name.split()[0] }}</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Contenido del panel -->
+        <div class="content-wrapper">
+            <!-- Encabezado de página -->
+            <div class="content-header">
+                <div class="header-breadcrumb">
+                    <h1>Mis Cursos</h1>
+                    <div class="breadcrumb">
+                        <a href="{{ url_for('dashboard_estudiante') }}">Home</a>
+                        <span>/</span>
+                        <span>Mis Cursos</span>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <div class="course-filters">
+                        <select id="filterCategory" class="filter-select">
+                            <option value="">Todas las categorías</option>
+                            {% for categoria in categorias %}
+                            <option value="{{ categoria }}">{{ categoria }}</option>
+                            {% endfor %}
+                        </select>
+
+                        <select id="filterDifficulty" class="filter-select">
+                            <option value="">Todas las dificultades</option>
+                            <option value="Básico">Básico</option>
+                            <option value="Intermedio">Intermedio</option>
+                            <option value="Avanzado">Avanzado</option>
+                        </select>
+
+                        <button id="resetFilters" class="btn-outline">
+                            <i class="fas fa-redo-alt"></i>
+                            <span>Reiniciar</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contador de cursos -->
+            <div class="courses-counter">
+                <p><span id="displayedCourses">{{ cursos|length }}</span> cursos de <span>{{ total_cursos }}</span></p>
+            </div>
+
+            <!-- Cursos del estudiante -->
+            <div class="full-courses-grid">
+                {% if cursos %}
+                {% for curso in cursos %}
+                <div class="full-course-card" data-category="{{ curso.categoria }}"
+                    data-difficulty="{{ curso.nivel_dificultad }}">
+                    <div class="course-image">
+                        {% if curso.imagen_portada %}
+                        <img src="{{ url_for('static', filename='img/courses/' + curso.imagen_portada) }}"
+                            alt="{{ curso.titulo }}">
+                        {% else %}
+                        <img src="{{ url_for('static', filename='img/courses/default-course.jpg') }}"
+                            alt="{{ curso.titulo }}">
+                        {% endif %}
+                        {% if curso.progreso is defined and curso.progreso > 0 %}
+                        <div class="course-progress-badge">{{ curso.progreso }}%</div>
+                        {% endif %}
+                    </div>
+                    <div class="course-content">
+                        <div class="course-header">
+                            <div class="course-category">{{ curso.categoria }}</div>
+                            <div class="course-difficulty {{ curso.nivel_dificultad|lower }}">
+                                {{ curso.nivel_dificultad }}
+                            </div>
+                        </div>
+                        <h3 class="course-title">{{ curso.titulo }}</h3>
+                        <p class="course-description">{{ curso.descripcion[:100] }}{% if curso.descripcion|length > 100
+                            %}...{% endif %}</p>
+
+                        <div class="course-meta">
+                            <div class="meta-item">
+                                <i class="fas fa-clock"></i>
+                                <span>{{ curso.duracion_estimada_horas }} horas</span>
+                            </div>
+                            {% if curso.competencias_desarrolladas %}
+                            <div class="meta-item">
+                                <i class="fas fa-award"></i>
+                                <span>{{ curso.competencias_desarrolladas.split(',')[0] }}{% if ',' in
+                                    curso.competencias_desarrolladas %}...{% endif %}</span>
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        {% if curso.progreso is defined and curso.progreso > 0 %}
+                        <div class="course-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill"></div>
+                            </div>
+                            <div class="progress-label">
+                                <span class="progress-text">{{ curso.progreso }}% completado</span>
+                                {% if curso.progreso == 100 %}
+                                <span class="progress-status completed"><i class="fas fa-check-circle"></i>
+                                    Completado</span>
+                                {% else %}
+                                <span class="progress-status in-progress"><i class="fas fa-spinner"></i> En
+                                    progreso</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <div class="course-actions">
+                            <a href="{{ url_for('contenido_curso', curso_id=curso.id_curso) }}"
+                                class="btn-primary-sm">Continuar</a>
+                            <button class="btn-icon-sm course-menu">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-book-open"></i>
+                    <h3>No tienes cursos inscritos</h3>
+                    <p>Explora nuestro catálogo y comienza a aprender hoy mismo.</p>
+                    <a href="#" class="btn-primary">Explorar cursos</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Toggle sidebar
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const menuToggle = document.getElementById('menuToggle');
+        const body = document.body;
+
+        function toggleSidebar() {
+            body.classList.toggle('sidebar-collapsed');
+        }
+
+        sidebarToggle.addEventListener('click', toggleSidebar);
+        menuToggle.addEventListener('click', toggleSidebar);
+
+        // Funcionalidad de búsqueda y filtrado
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.getElementById('searchCourses');
+            const filterCategory = document.getElementById('filterCategory');
+            const filterDifficulty = document.getElementById('filterDifficulty');
+            const resetFilters = document.getElementById('resetFilters');
+            const courseCards = document.querySelectorAll('.full-course-card');
+            const displayedCounter = document.getElementById('displayedCourses');
+
+            function filterCourses() {
+                const searchTerm = searchInput.value.toLowerCase();
+                const categoryFilter = filterCategory.value;
+                const difficultyFilter = filterDifficulty.value;
+
+                let visibleCount = 0;
+
+                courseCards.forEach(card => {
+                    const title = card.querySelector('.course-title').textContent.toLowerCase();
+                    const description = card.querySelector('.course-description').textContent.toLowerCase();
+                    const category = card.getAttribute('data-category');
+                    const difficulty = card.getAttribute('data-difficulty');
+
+                    const matchesSearch = title.includes(searchTerm) || description.includes(searchTerm);
+                    const matchesCategory = categoryFilter === '' || category === categoryFilter;
+                    const matchesDifficulty = difficultyFilter === '' || difficulty === difficultyFilter;
+
+                    if (matchesSearch && matchesCategory && matchesDifficulty) {
+                        card.style.display = 'flex';
+                        visibleCount++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                displayedCounter.textContent = visibleCount;
+            }
+
+            searchInput.addEventListener('input', filterCourses);
+            filterCategory.addEventListener('change', filterCourses);
+            filterDifficulty.addEventListener('change', filterCourses);
+
+            resetFilters.addEventListener('click', function () {
+                searchInput.value = '';
+                filterCategory.value = '';
+                filterDifficulty.value = '';
+                filterCourses();
+            });
+        });
+    </script>
+</body>
+
+</html>
+{% endblock content_bot %}

@@ -1,0 +1,29 @@
+{% extends "admin_general/base.html" %}
+
+{% block title %}Gestión de Instituciones - NexoEDU{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='institucion/index.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="institution-management-container">
+    <h1 class="">Gestión de Instituciones</h1>
+
+    <div>
+        <div>
+            <a href="{{ url_for('institucion_create') }}" class="btn btn-primary mb-3">
+                <i class="fas fa-plus"></i> Agregar Institución</a>
+        </div>
+
+        <!-- Ver Lista de Instituciones -->
+        <div>
+            <a href="{{ url_for('institucion_list') }}" class="btn btn-primary mb-3">
+                <i class="fas fa-list"></i> Ver Lista de Instituciones
+            </a>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

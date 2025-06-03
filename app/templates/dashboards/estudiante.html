@@ -1,0 +1,555 @@
+{% extends "base.html" %}
+{% block content_bot %}
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} - NexoEDU</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body class="dashboard-body">
+    <!-- Navegación lateral -->
+    <nav class="dashboard-sidebar">
+        <div class="sidebar-header">
+            <a href="{{ url_for('dashboard') }}" class="sidebar-brand">
+                <span class="brand-icon">🎓</span>
+                <span class="brand-text">NexoEDU</span>
+            </a>
+            <button id="sidebarToggle" class="sidebar-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <div class="sidebar-user">
+            <div class="user-avatar">
+                <img src="{{ url_for('static', filename='img/avatars/default-avatar.png') }}" alt="Avatar">
+            </div>
+            <div class="user-info">
+                <h3 class="user-name">{{ user_name }}</h3>
+                <span class="user-role">Estudiante</span>
+            </div>
+        </div>
+
+        <div class="sidebar-nav">
+            <div class="sidebar-section">
+                <span class="section-title">PRINCIPAL</span>
+                <ul class="nav-items">
+                    <li class="nav-item active">
+                        <a href="{{ url_for('dashboard_estudiante') }}">
+                            <i class="fas fa-home"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ url_for('cursos_estudiante') }}">
+                            <i class="fas fa-book"></i>
+                            <span>Mis Cursos</span>
+                            <span class="item-badge success">{{ cursos_en_progreso|length + cursos_recomendados|length
+                                }}</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="disabled-link">
+                            <i class="fas fa-calendar"></i>
+                            <span>Calendario</span>
+                            <span class="item-badge disabled">Próximamente</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="disabled-link">
+                            <i class="fas fa-tasks"></i>
+                            <span>Tareas</span>
+                            <span class="item-badge disabled">Próximamente</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- <div class="sidebar-section">
+                <span class="section-title">EXPLORAR</span>
+                <ul class="nav-items">
+                    <li class="nav-item">
+                        <a href="#">
+                            <i class="fas fa-compass"></i>
+                            <span>Catálogo de Cursos</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#">
+                            <i class="fas fa-certificate"></i>
+                            <span>Certificados</span>
+                        </a>
+                    </li>
+                </ul>
+            </div> -->
+
+            <div class="sidebar-section">
+                <span class="section-title">CUENTA</span>
+                <ul class="nav-items">
+                    <li class="nav-item">
+                        <a href="#">
+                            <i class="fas fa-user-circle"></i>
+                            <span>Mi Perfil</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="disabled-link" href="#">
+                            <i class="fas fa-cog"></i>
+                            <span>Configuración</span>
+                            <span class="item-badge disabled">Próximamente</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ url_for('logout') }}">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Cerrar Sesión</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <main class="dashboard-content">
+        <!-- Navbar superior -->
+        <nav class="content-navbar">
+            <div class="navbar-left">
+                <button id="menuToggle" class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="navbar-search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Buscar cursos...">
+                </div>
+            </div>
+            <div class="navbar-right">
+                <div class="navbar-item">
+                    <button class="navbar-button">
+                        <i class="far fa-bell"></i>
+
+                    </button>
+                </div>
+                <div class="navbar-item">
+                    <button class="navbar-button">
+                        <i class="far fa-envelope"></i>
+
+                    </button>
+                </div>
+                <div class="navbar-item">
+                    <div class="dropdown">
+                        <button class="dropdown-toggle">
+                            <div class="user-avatar small">
+                                <img src="{{ url_for('static', filename='img/avatars/default-avatar.png') }}"
+                                    alt="Avatar">
+                            </div>
+                            <span class="user-name-short">{{ user_name.split()[0] }}</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Contenido del panel -->
+        <div class="content-wrapper">
+            <!-- Encabezado de página -->
+            <div class="content-header">
+                <div class="header-breadcrumb">
+                    <h1>Dashboard</h1>
+                    <div class="breadcrumb">
+                        <a href="#">Home</a>
+                        <span>/</span>
+                        <span>Dashboard</span>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-outline">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>{{ today }}</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Información general -->
+            <div class="stats-cards">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>3</h3>
+                        <span>Cursos Activos</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background-color: #10b981;">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>78%</h3>
+                        <span>Progreso Promedio</span>
+                    </div>
+                </div>
+                <div class="stat-card disabled-link">
+                    <div class="stat-icon " style="background-color: #f59e0b;">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="stat-info">
+
+                        <span>Tareas Pendientes</span>
+                    </div>
+                </div>
+                <div class="stat-card disabled-link">
+                    <div class="stat-icon" style="background-color: #8b5cf6;">
+                        <i class="fas fa-certificate"></i>
+                    </div>
+                    <div class="stat-info">
+
+                        <span>Certificados</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gráficas y cursos -->
+            <div class="dashboard-grid">
+                <!-- Actividad del estudiante -->
+                <div class="dashboard-card wide">
+                    <div class="card-header">
+                        <h2>Tu actividad reciente</h2>
+                        <div class="card-actions">
+                            <button class="btn-icon">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="activityChart" height="300"></canvas>
+                    </div>
+                </div>
+
+                <!-- Progreso en habilidades -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h2>Mis competencias</h2>
+                        <div class="card-actions">
+                            <button class="btn-icon">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="skillsChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Próximas tareas -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h2>Próximas tareas</h2>
+                        <div class="card-actions">
+                            <a href="#" class="link-text">Ver todas</a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="task-list">
+                            <div class="task-item">
+                                <div class="task-status warning"></div>
+                                <div class="task-content">
+                                    <h4>Entrega proyecto final</h4>
+                                    <p>Programación Básica</p>
+                                </div>
+                                <div class="task-date">
+                                    <span>Mañana</span>
+                                </div>
+                            </div>
+                            <div class="task-item">
+                                <div class="task-status danger"></div>
+                                <div class="task-content">
+                                    <h4>Quiz módulo 3</h4>
+                                    <p>Educación Financiera</p>
+                                </div>
+                                <div class="task-date">
+                                    <span>En 2 días</span>
+                                </div>
+                            </div>
+                            <div class="task-item">
+                                <div class="task-status"></div>
+                                <div class="task-content">
+                                    <h4>Lectura semanal</h4>
+                                    <p>Habilidades Blandas</p>
+                                </div>
+                                <div class="task-date">
+                                    <span>En 5 días</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mis cursos -->
+            <div class="courses-section">
+                <div class="section-header">
+                    <h2>Mis cursos en progreso</h2>
+                    <a href="{{ url_for('cursos_estudiante') }}" " class=" link-text">Ver todos los cursos</a>
+                </div>
+
+                <div class="courses-grid">
+                    {% if cursos_en_progreso %}
+                    {% for curso in cursos_en_progreso %}
+                    <div class="course-card">
+                        <div class="course-image">
+                            {% if curso.imagen_portada %}
+                            <img src="{{ url_for('static', filename='img/courses/' + curso.imagen_portada) }}"
+                                alt="{{ curso.titulo }}">
+                            {% else %}
+                            <img src="{{ url_for('static', filename='img/courses/default-course.jpg') }}"
+                                alt="{{ curso.titulo }}">
+                            {% endif %}
+                            <span class="course-badge">En progreso</span>
+                        </div>
+                        <div class="course-content">
+                            <div class="course-category">{{ curso.categoria }}</div>
+                            <h3>{{ curso.titulo }}</h3>
+                            <div class="course-meta">
+                                <span><i class="fas fa-clock"></i> {{ curso.duracion_estimada_horas }} horas</span>
+                                <span><i class="fas fa-signal"></i> {{ curso.nivel_dificultad }}</span>
+                            </div>
+                            <div class="course-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill"></div>
+                                </div>
+                                <span class="progress-text">{{ curso.progreso }}% completado</span>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <div class="empty-state">
+                        <i class="fas fa-book-open"></i>
+                        <h3>No tienes cursos en progreso</h3>
+                        <p>Explora nuestro catálogo y comienza a aprender hoy mismo.</p>
+                        <a href="#" class="btn-primary-sm">Explorar cursos</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Cursos recomendados -->
+            <div class="courses-section">
+                <div class="section-header">
+                    <h2>Cursos recomendados para ti</h2>
+                    <a href="#" class="link-text">Ver catálogo completo</a>
+                </div>
+
+                <div class="courses-grid">
+                    {% if cursos_recomendados %}
+                    {% for curso in cursos_recomendados %}
+                    <div class="course-card">
+                        <div class="course-image">
+                            {% if curso.imagen_portada %}
+                            <img src="{{ url_for('static', filename='img/courses/' + curso.imagen_portada) }}"
+                                alt="{{ curso.titulo }}">
+                            {% else %}
+                            <img src="{{ url_for('static', filename='img/courses/default-course.jpg') }}"
+                                alt="{{ curso.titulo }}">
+                            {% endif %}
+                            {% if loop.first %}
+                            <span class="course-badge new">Nuevo</span>
+                            {% elif loop.index == 3 %}
+                            <span class="course-badge hot">Popular</span>
+                            {% endif %}
+                        </div>
+                        <div class="course-content">
+                            <div class="course-category">{{ curso.categoria }}</div>
+                            <h3>{{ curso.titulo }}</h3>
+                            <div class="course-meta">
+                                <span><i class="fas fa-clock"></i> {{ curso.duracion_estimada_horas }} horas</span>
+                                <span><i class="fas fa-signal"></i> {{ curso.nivel_dificultad }}</span>
+                            </div>
+                            <div class="course-footer">
+                                <div class="course-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>{{ curso.rating }}</span>
+                                </div>
+                                <button class="btn-primary-sm">Inscribirse</button>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <!-- Si no hay cursos recomendados -->
+                    <div class="empty-state">
+                        <i class="fas fa-lightbulb"></i>
+                        <h3>No hay recomendaciones disponibles</h3>
+                        <p>Pronto tendremos recomendaciones personalizadas para ti.</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Toggle sidebar
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const menuToggle = document.getElementById('menuToggle');
+        const body = document.body;
+
+        function toggleSidebar() {
+            body.classList.toggle('sidebar-collapsed');
+        }
+
+        sidebarToggle.addEventListener('click', toggleSidebar);
+        menuToggle.addEventListener('click', toggleSidebar);
+
+        // Gráfica de actividad
+        const activityCtx = document.getElementById('activityChart').getContext('2d');
+        const activityChart = new Chart(activityCtx, {
+            type: 'line',
+            data: {
+                labels: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
+                datasets: [{
+                    label: 'Horas de estudio',
+                    data: [2, 1.5, 3, 0.5, 2.5, 3.5, 1],
+                    backgroundColor: 'rgba(14, 165, 233, 0.2)',
+                    borderColor: 'rgba(14, 165, 233, 1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.3,
+                    pointBackgroundColor: '#ffffff',
+                    pointBorderColor: '#0ea5e9',
+                    pointBorderWidth: 2,
+                    pointRadius: 4,
+                    pointHoverRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function (value) {
+                                return value + 'h';
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: '#1e293b',
+                        titleFont: {
+                            size: 13,
+                            family: 'Inter'
+                        },
+                        bodyFont: {
+                            size: 12,
+                            family: 'Inter'
+                        },
+                        padding: 12,
+                        displayColors: false,
+                        callbacks: {
+                            label: function (context) {
+                                return context.parsed.y + ' horas de estudio';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Gráfica de habilidades
+        const skillsCtx = document.getElementById('skillsChart').getContext('2d');
+        const skillsChart = new Chart(skillsCtx, {
+            type: 'radar',
+            data: {
+                labels: [
+                    'Programación',
+                    'Finanzas',
+                    'Habilidades Blandas',
+                    'Emprendimiento',
+                    'Competencias Digitales',
+                    'Diseño'
+                ],
+                datasets: [{
+                    label: 'Nivel actual',
+                    data: [65, 40, 85, 20, 60, 15],
+                    backgroundColor: 'rgba(14, 165, 233, 0.2)',
+                    borderColor: 'rgba(14, 165, 233, 1)',
+                    borderWidth: 2,
+                    pointBackgroundColor: '#ffffff',
+                    pointBorderColor: '#0ea5e9',
+                    pointBorderWidth: 2,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: {
+                            display: false,
+                            stepSize: 20
+                        },
+                        pointLabels: {
+                            font: {
+                                size: 11,
+                                family: 'Inter'
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: '#1e293b',
+                        titleFont: {
+                            size: 13,
+                            family: 'Inter'
+                        },
+                        bodyFont: {
+                            size: 12,
+                            family: 'Inter'
+                        },
+                        padding: 12,
+                        callbacks: {
+                            label: function (context) {
+                                return context.parsed.r + '% de dominio';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
+
+{% endblock content_bot %}

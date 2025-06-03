@@ -1,0 +1,11 @@
+flask
+flask-sqlalchemy
+pymysql
+python-dotenv
+flask-wtf
+flask-login
+flask-bcrypt
+flask-mail
+werkzeug
+openai
+google-generativeai

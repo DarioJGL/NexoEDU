@@ -1,0 +1,223 @@
+{% extends "admin_general/base.html" %}
+
+{% block title %}Actualizar Usuario - NexoEDU{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='usuario/update.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="update-user-container">
+    <div class="header-section">
+        <h1 class="page-title">
+            <i class="fas fa-user-edit"></i>
+            Actualizar Usuario
+        </h1>
+
+    </div>
+
+
+    <div>
+        <div>
+            <div>
+                <h5>
+                    <i class="fas fa-user"></i>
+                    Información del Usuario
+                </h5>
+            </div>
+            <div>
+                <form method="POST" novalidate>
+                    <div>
+                        <!-- Información Personal -->
+                        <div>
+                            <h6>
+                                <i class="fas fa-id-card"></i>
+                                Información Personal
+                            </h6>
+
+                            <div>
+                                <label for="nombres">Nombres</label>
+                                <input type="text" id="nombres" name="nombres" value="{{ usuario.nombres }}" required>
+                                <div>Mínimo 2 caracteres, solo letras y espacios</div>
+                            </div>
+
+                            <div>
+                                <label for="apellidos">Apellidos</label>
+                                <input type="text" id="apellidos" name="apellidos" value="{{ usuario.apellidos }}"
+                                    required>
+                                <div>Mínimo 2 caracteres, solo letras y espacios</div>
+                            </div>
+
+                            <div>
+                                <label for="documento_identidad">Documento de Identidad</label>
+                                <input type="text" id="documento_identidad" name="documento_identidad"
+                                    value="{{ usuario.documento_identidad }}" required>
+                                <div>Numero de Identidad</div>
+                            </div>
+
+                            <div>
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email" value="{{ usuario.email }}" required>
+                                <div>Dirección de correo electrónico válida</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sección de Contraseña -->
+
+
+                    <div>
+                        <div>
+                            <div>
+                                <h6>
+                                    <i class="fas fa-lock"></i>
+                                    Cambiar Contraseña (Opcional)
+                                </h6>
+                                <div>
+                                    <i class="fas fa-info-circle"></i>
+                                    Deja este campo vacío si no deseas cambiar la contraseña actual
+                                </div>
+                            </div>
+                            <div>
+                                <label for="password">Nueva Contraseña</label>
+                                <div>
+                                    <input type="password" id="password" name="password"
+                                        placeholder="Dejar vacío para mantener actual">
+                                    <button type="button" data-target="password">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                                <div>
+                                    Mínimo 8 caracteres, al menos una mayúscula, una minúscula, un número y un carácter
+                                    especial
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Información adicional -->
+                    <div>
+                        <div>
+                            <div>
+                                <h6>
+                                    <i class="fas fa-info-circle"></i>
+                                    Información del Sistema
+                                </h6>
+                                <div>
+                                    <div>
+                                        <strong>ID Usuario:</strong> {{ usuario.id_usuario }}
+                                    </div>
+                                    <div>
+                                        <strong>Fecha de Registro:</strong>
+                                        {{ usuario.fecha_registro.strftime('%d/%m/%Y %H:%M') if usuario.fecha_registro
+                                        else 'N/A' }}
+                                    </div>
+                                    <div>
+                                        <strong>Último Acceso:</strong>
+                                        {{ usuario.ultimo_acceso.strftime('%d/%m/%Y %H:%M') if usuario.ultimo_acceso
+                                        else 'Nunca' }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Botones de acción -->
+                    <div>
+                        <button type="submit">
+                            <i class="fas fa-save"></i>
+                            Actualizar Usuario
+                        </button>
+                        <a href="{{ url_for('usuario_list') }}">
+                            <i class="fas fa-arrow-left"></i>
+                            Volver a Lista
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Toggle password visibility
+        document.querySelectorAll('.toggle-password').forEach(function (button) {
+            button.addEventListener('click', function () {
+                const targetId = this.getAttribute('data-target');
+                const input = document.getElementById(targetId);
+                const icon = this.querySelector('i');
+
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    input.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+            });
+        });
+
+        // Form validation
+        const form = document.querySelector('.user-form');
+        form.addEventListener('submit', function (e) {
+            let isValid = true;
+
+            // Validar nombres
+            const nombres = document.getElementById('nombres');
+            if (nombres.value.trim().length < 2) {
+                showFieldError(nombres, 'Los nombres deben tener al menos 2 caracteres');
+                isValid = false;
+            } else {
+                clearFieldError(nombres);
+            }
+
+            // Validar apellidos
+            const apellidos = document.getElementById('apellidos');
+            if (apellidos.value.trim().length < 2) {
+                showFieldError(apellidos, 'Los apellidos deben tener al menos 2 caracteres');
+                isValid = false;
+            } else {
+                clearFieldError(apellidos);
+            }
+
+            // Validar email
+            const email = document.getElementById('email');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email.value)) {
+                showFieldError(email, 'Ingresa un email válido');
+                isValid = false;
+            } else {
+                clearFieldError(email);
+            }
+
+            if (!isValid) {
+                e.preventDefault();
+            }
+        });
+
+        function showFieldError(field, message) {
+            field.classList.add('is-invalid');
+            let feedback = field.parentNode.querySelector('.invalid-feedback');
+            if (!feedback) {
+                feedback = document.createElement('div');
+                feedback.className = 'invalid-feedback';
+                field.parentNode.appendChild(feedback);
+            }
+            feedback.textContent = message;
+        }
+
+        function clearFieldError(field) {
+            field.classList.remove('is-invalid');
+            const feedback = field.parentNode.querySelector('.invalid-feedback');
+            if (feedback) {
+                feedback.remove();
+            }
+        }
+    });
+</script>
+{% endblock %}

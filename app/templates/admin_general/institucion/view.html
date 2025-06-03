@@ -1,0 +1,116 @@
+{% extends "admin_general/base.html" %}
+
+{% block title %}Lista de Instituciones - NexoEDU{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='institucion/view.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div class="institution-list-container">
+    <div class="header-container">
+        <h1 class="page-title">Lista de Instituciones</h1>
+        <div class="add-institution-button">
+            <a href="{{ url_for('institucion_create') }}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Agregar Institución
+            </a>
+        </div>
+    </div> <!-- Filtro por departamento -->
+    <div class="filter-container">
+        <div class="form-group">
+            <label for="departmentFilter">Filtrar por departamento:</label>
+            <select id="departmentFilter" class="form-control">
+                <option value="todos">Todos</option>
+                {% set departamentos_unicos = [] %}
+                {% for institucion in instituciones %}
+                {% if institucion.departamento and institucion.departamento not in departamentos_unicos %}
+                {% set _ = departamentos_unicos.append(institucion.departamento) %}
+                {% endif %}
+                {% endfor %}
+                {% for departamento in departamentos_unicos %}
+                <option value="{{ departamento }}">{{ departamento }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <div class="institution-list">
+        {% if instituciones %} <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+
+                    <th>Departamento</th>
+                    <th>Ciudad</th>
+                    <th>Teléfono</th>
+                    <th>Email</th>
+
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for institucion in instituciones %}
+                <tr class="institution-row" data-departamento="{{ institucion.departamento }}">
+                    <td>{{ institucion.id_institucion }}</td>
+                    <td>{{ institucion.nombre_institucion }}</td>
+
+                    <td>{{ institucion.departamento }}</td>
+                    <td>{{ institucion.ciudad }}</td>
+                    <td>{{ institucion.telefono or 'N/A' }}</td>
+                    <td>{{ institucion.email_institucional or 'N/A' }}</td>
+
+                    </td>
+                    <td class="actions">
+                        <a href="{{ url_for('institucion_update', institucion_id=institucion.id_institucion) }}"
+                            class="btn btn-sm btn-warning edit-btn" title="Editar institución"
+                            data-id="{{ institucion.id_institucion }}">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a href="{{ url_for('institucion_delete', institucion_id=institucion.id_institucion) }}"
+                            class="btn btn-sm btn-danger delete-btn" title="Eliminar institución"
+                            data-id="{{ institucion.id_institucion }}"
+                            onclick="return confirm('¿Está seguro que desea eliminar la institución {{ institucion.nombre_institucion }}? Esta acción no se puede deshacer.')">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="9">No hay instituciones registradas</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="no-institutions">No hay instituciones registradas.</p>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Filtrar instituciones por departamento
+        const departmentFilter = document.getElementById('departmentFilter');
+
+        departmentFilter.addEventListener('change', function () {
+            const selectedDepartment = this.value;
+            const rows = document.querySelectorAll('.institution-row');
+
+            rows.forEach(row => {
+                const institutionDepartment = row.dataset.departamento;
+
+                if (selectedDepartment === 'todos' || institutionDepartment === selectedDepartment) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

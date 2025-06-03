@@ -1,0 +1,138 @@
+{% extends "admin_general/base.html" %}
+
+{% block title %}Lista de Usuarios - NexoEDU{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='usuario/view.css') }}">
+{% endblock %}
+
+{% block content %}
+
+
+<div class="user-list-container">
+    <div class="header-container">
+        <h1 class="page-title">Lista de Usuarios</h1>
+        <div class="add-user-button">
+            <a href="{{ url_for('usuario_create') }}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Agregar Usuario
+            </a>
+        </div>
+    </div>
+
+    <!-- Filtro por tipo de usuario -->
+    <div class="filter-container">
+        <div class="form-group">
+            <label for="userTypeFilter">Filtrar por tipo:</label>
+            <select id="userTypeFilter" class="form-control">
+                <option value="todos">Todos</option>
+                <option value="admin_general">Administrador General</option>
+                <option value="admin_institucional">Administrador Institucional</option>
+                <option value="docente">Docente</option>
+                <option value="estudiante">Estudiante</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="user-list">
+        {% if usuarios %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Email</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Documento</th>
+                    <th>Tipo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for usuario in usuarios %}
+                <tr class="user-row" data-tipo="{{ usuario.tipo_usuario }}">
+                    <td>{{ usuario.id_usuario }}</td>
+                    <td>{{ usuario.email }}</td>
+                    <td>{{ usuario.nombres }}</td>
+                    <td>{{ usuario.apellidos }}</td>
+                    <td>{{ usuario.documento_identidad }}</td>
+                    <td>{{ usuario.tipo_usuario }}</td>
+                    <td class="actions">
+
+                        <a href="{{ url_for('usuario_update', user_id=usuario.id_usuario) }}"
+                            class="btn btn-sm btn-warning edit-btn" title="Editar usuario"
+                            data-id="{{ usuario.id_usuario }}">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a href="{{ url_for('usuario_delete', user_id=usuario.id_usuario) }}"
+                            class="btn btn-sm btn-danger delete-btn" title="Eliminar usuario"
+                            data-id="{{ usuario.id_usuario }}"
+                            onclick="return confirm('¿Está seguro que desea eliminar a {{ usuario.nombres }} {{ usuario.apellidos }}? Esta acción no se puede deshacer.')">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="7">No hay usuarios registrados</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="no-users">No hay usuarios registrados.</p>
+        {% endif %}
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Filtrar usuarios por tipo
+        const userTypeFilter = document.getElementById('userTypeFilter');
+
+        userTypeFilter.addEventListener('change', function () {
+            const selectedType = this.value;
+            const rows = document.querySelectorAll('.user-row');
+
+            rows.forEach(row => {
+                const userType = row.dataset.tipo;
+
+                if (selectedType === 'todos' || userType === selectedType) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+
+
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function (e) {
+                e.preventDefault();
+                const userId = this.dataset.id;
+                const userRow = this.closest('tr');
+                const userName = userRow.querySelector('td:nth-child(3)').textContent + ' ' +
+                    userRow.querySelector('td:nth-child(4)').textContent;
+
+                console.log(`Intentando eliminar al usuario: ${userName} (ID: ${userId})`);
+
+                // Configurar el modal con la información del usuario
+                document.getElementById('userName').textContent = userName;
+                confirmDeleteBtn.href = this.href;
+
+                // Mostrar el modal
+                $('#deleteConfirmModal').modal('show');
+            });
+        });
+
+        // Opcional: Añadir log cuando se confirma la eliminación
+        confirmDeleteBtn.addEventListener('click', function () {
+            console.log('Eliminación confirmada, redirigiendo a:', this.href);
+        });
+    });
+</script>
+{% endblock %}

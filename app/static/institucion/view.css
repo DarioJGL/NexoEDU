@@ -1,0 +1,266 @@
+/* Variables CSS (hereda de index.css) */
+:root {
+    --primary-blue: #0ea5e9;
+    --primary-dark: #0284c7;
+    --secondary-blue: #38bdf8;
+    --accent-green: #10b981;
+    --dark-blue: #0f172a;
+    --gray-dark: #1e293b;
+    --gray-light: #f8fafc;
+    --white: #ffffff;
+    --text-primary: #1f2937;
+    --text-secondary: #6b7280;
+    --border-light: #e5e7eb;
+    --danger-red: #ef4444;
+    --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para la vista de lista de instituciones */
+
+/* Personalización de la tabla */
+.table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+}
+
+.table thead th {
+    background-color: var(--gray-light);
+    border-bottom: 2px solid var(--border-light);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    padding: 12px;
+    color: var(--text-primary);
+}
+
+.table tbody td {
+    padding: 12px;
+    vertical-align: middle;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-light);
+}
+
+.table tbody tr:hover {
+    background-color: rgba(14, 165, 233, 0.05);
+}
+
+.institution-list-container {
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Contenedor flexible para el título y el botón */
+.institution-list-container .header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.institution-list-container .page-title {
+    color: var(--text-primary);
+    margin: 0;
+    font-size: 2rem;
+}
+
+.institution-list-container .add-institution-button {
+    margin-left: 1rem;
+}
+
+.institution-list-container .btn-primary {
+    background: linear-gradient(135deg, var(--primary-blue), var(--primary-dark));
+    border-color: var(--primary-blue);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(14, 165, 233, 0.3);
+}
+
+.institution-list-container .btn-primary:hover {
+    background: linear-gradient(135deg, var(--primary-dark), var(--primary-blue));
+    border-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(14, 165, 233, 0.4);
+}
+
+/* Filtro de instituciones */
+.filter-container {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background-color: var(--gray-light);
+    border-radius: 12px;
+    border: 1px solid var(--border-light);
+}
+
+.filter-container .form-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.filter-container label {
+    font-weight: 600;
+    margin-bottom: 0;
+    color: var(--text-primary);
+    min-width: 100px;
+}
+
+.filter-container select {
+    padding: 0.5rem;
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    flex: 1;
+    max-width: 300px;
+}
+
+/* Estilos para la tabla */
+.institution-list-container .table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    box-shadow: var(--card-shadow);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.institution-list-container .table th,
+.institution-list-container .table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.institution-list-container .table th {
+    background-color: var(--gray-light);
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.institution-list-container .table tr:hover {
+    background-color: var(--gray-light);
+}
+
+/* Estilos para botones de acción */
+.institution-list-container .actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.institution-list-container .btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+.institution-list-container .btn-info {
+    background-color: var(--secondary-blue);
+    border-color: var(--secondary-blue);
+    color: var(--white);
+}
+
+.institution-list-container .btn-warning {
+    background-color: #f59e0b;
+    border-color: #f59e0b;
+    color: var(--white);
+}
+
+.institution-list-container .btn-danger {
+    background-color: var(--danger-red);
+    border-color: var(--danger-red);
+    color: var(--white);
+}
+
+/* Mensaje cuando no hay instituciones */
+.institution-list-container .no-institutions {
+    padding: 2rem;
+    text-align: center;
+    color: var(--text-secondary);
+    background-color: var(--gray-light);
+    border-radius: 12px;
+}
+
+.edit-btn {
+    cursor: pointer;
+}
+
+.edit-btn:hover {
+    background-color: #d97706;
+}
+
+.delete-btn {
+    cursor: pointer;
+}
+
+.delete-btn:hover {
+    background-color: #dc2626;
+}
+
+/* Estilos responsivos */
+@media (max-width: 1200px) {
+    .institution-list-container .table {
+        font-size: 0.9rem;
+    }
+
+    .institution-list-container .table th,
+    .institution-list-container .table td {
+        padding: 0.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .institution-list-container .header-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .institution-list-container .page-title {
+        margin-bottom: 1rem;
+    }
+
+    .institution-list-container .add-institution-button {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .filter-container .form-group {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .filter-container select {
+        max-width: 100%;
+    }
+
+    .institution-list-container .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .institution-list-container .table {
+        font-size: 0.8rem;
+    }
+
+    .institution-list-container .actions {
+        flex-direction: column;
+    }
+
+    .institution-list-container .btn-sm {
+        margin-bottom: 0.25rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .institution-list-container {
+        padding: 1rem;
+    }
+
+    .institution-list-container .table th,
+    .institution-list-container .table td {
+        padding: 0.4rem;
+        font-size: 0.75rem;
+    }
+}

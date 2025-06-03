@@ -1,0 +1,31 @@
+{% extends "admin_general/base.html" %}
+
+{% block title %}Gestión de Usuarios - NexoEDU{% endblock %}
+
+{% block styles %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='usuario/index.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="user-management-container">
+    <h1 class="">Gestión de Usuarios</h1>
+
+    <div>
+        <div>
+            <a href="{{ url_for('usuario_create') }}" class="btn btn-primary mb-3">
+                <i class="fas fa-plus"></i> Agregar Usuario</a>
+        </div>
+
+
+        <!-- Ver Lista de Usuarios -->
+        <div>
+            <a href="{{ url_for('usuario_list') }}" class="btn btn-primary mb-3">
+                <i class="fas fa-list"></i> Ver Lista de Usuarios
+            </a>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

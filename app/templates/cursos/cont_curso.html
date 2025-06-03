@@ -1,0 +1,564 @@
+{% extends "base.html" %}
+{% block content_bot %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ curso.titulo }} - NexoEDU</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='cont_curso.css') }}">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body class="dashboard-body">
+    <!-- Navegación lateral -->
+    <nav class="dashboard-sidebar course-sidebar">
+        <div class="sidebar-header">
+            <a href="{{ url_for('dashboard') }}" class="sidebar-brand">
+                <span class="brand-icon">🎓</span>
+                <span class="brand-text">NexoEDU</span>
+            </a>
+            <button id="sidebarToggle" class="sidebar-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <div class="course-sidebar-info">
+            <a href="{{ url_for('dashboard_estudiante') }}" class="back-to-dashboard">
+                <i class="fas fa-arrow-left"></i>
+                <span>Volver al Dashboard</span>
+            </a>
+            <div class="course-sidebar-image">
+                {% if curso.imagen_portada %}
+                <img src="{{ url_for('static', filename='img/courses/' + curso.imagen_portada) }}"
+                    alt="{{ curso.titulo }}">
+                {% else %}
+                <img src="{{ url_for('static', filename='img/courses/finance.jpg') }}" alt="{{ curso.titulo }}">
+                {% endif %}
+            </div>
+            <h3 class="course-sidebar-title">{{ curso.titulo }}</h3>
+            <div class="course-sidebar-meta">
+                <span class="sidebar-category">{{ curso.categoria }}</span>
+                <span class="sidebar-level">{{ curso.nivel_dificultad }}</span>
+            </div>
+            <div class="course-sidebar-progress">
+                <div class="sidebar-progress-bar">
+                    <div class="sidebar-progress-fill" style="width: 49%;"></div>
+                </div>
+                <span class="sidebar-progress-text">{{ curso.progreso }}% completado</span>
+            </div>
+        </div>
+
+        <div class="sidebar-nav course-nav">
+            <div class="sidebar-section">
+                <span class="section-title">CONTENIDO DEL CURSO</span>
+                <ul class="module-list">
+                    <!-- Módulo 1 -->
+                    <li class="module-item expanded">
+                        <div class="module-header">
+                            <div class="module-info">
+                                <span class="module-number">Módulo 1</span>
+                                <span class="module-title">Introducción a la Contabilidad</span>
+                            </div>
+                            <div class="module-status completed">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                        </div>
+                        <ul class="lesson-list">
+                            <li class="lesson-item completed">
+                                <a href="#" class="lesson-link">
+                                    <span class="lesson-icon"><i class="fas fa-play-circle"></i></span>
+                                    <span class="lesson-title">Conceptos básicos</span>
+                                    <span class="lesson-duration">15 min</span>
+                                </a>
+                            </li>
+                            <li class="lesson-item completed">
+                                <a href="#" class="lesson-link">
+                                    <span class="lesson-icon"><i class="fas fa-file-alt"></i></span>
+                                    <span class="lesson-title">Principios contables</span>
+                                    <span class="lesson-duration">20 min</span>
+                                </a>
+                            </li>
+                            <li class="lesson-item completed">
+                                <a href="#" class="lesson-link quiz">
+                                    <span class="lesson-icon"><i class="fas fa-question-circle"></i></span>
+                                    <span class="lesson-title">Quiz - Fundamentos</span>
+                                    <span class="lesson-score">90%</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- Módulo 2 -->
+                    <li class="module-item expanded">
+                        <div class="module-header">
+                            <div class="module-info">
+                                <span class="module-number">Módulo 2</span>
+                                <span class="module-title">Estados Financieros</span>
+                            </div>
+                            <div class="module-status completed">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                        </div>
+                        <ul class="lesson-list">
+                            <li class="lesson-item completed">
+                                <a href="#" class="lesson-link">
+                                    <span class="lesson-icon"><i class="fas fa-play-circle"></i></span>
+                                    <span class="lesson-title">Balance General</span>
+                                    <span class="lesson-duration">25 min</span>
+                                </a>
+                            </li>
+                            <li class="lesson-item completed">
+                                <a href="#" class="lesson-link">
+                                    <span class="lesson-icon"><i class="fas fa-play-circle"></i></span>
+                                    <span class="lesson-title">Estado de Resultados</span>
+                                    <span class="lesson-duration">30 min</span>
+                                </a>
+                            </li>
+                            <li class="lesson-item completed">
+                                <a href="#" class="lesson-link">
+                                    <span class="lesson-icon"><i class="fas fa-file-alt"></i></span>
+                                    <span class="lesson-title">Flujo de Efectivo</span>
+                                    <span class="lesson-duration">20 min</span>
+                                </a>
+                            </li>
+                            <li class="lesson-item completed">
+                                <a href="#" class="lesson-link quiz">
+                                    <span class="lesson-icon"><i class="fas fa-question-circle"></i></span>
+                                    <span class="lesson-title">Quiz - Estados Financieros</span>
+                                    <span class="lesson-score">85%</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- Módulo 3 -->
+                    <li class="module-item active expanded">
+                        <div class="module-header">
+                            <div class="module-info">
+                                <span class="module-number">Módulo 3</span>
+                                <span class="module-title">Análisis Financiero</span>
+                            </div>
+                            <div class="module-status in-progress">
+                                <i class="fas fa-circle"></i>
+                            </div>
+                        </div>
+                        <ul class="lesson-list">
+                            <li class="lesson-item completed">
+                                <a href="#" class="lesson-link">
+                                    <span class="lesson-icon"><i class="fas fa-play-circle"></i></span>
+                                    <span class="lesson-title">Indicadores Financieros</span>
+                                    <span class="lesson-duration">35 min</span>
+                                </a>
+                            </li>
+                            <li class="lesson-item active">
+                                <a href="#" class="lesson-link">
+                                    <span class="lesson-icon"><i class="fas fa-play-circle"></i></span>
+                                    <span class="lesson-title">Rentabilidad</span>
+                                    <span class="lesson-duration">30 min</span>
+                                </a>
+                            </li>
+                            <li class="lesson-item">
+                                <a href="#" class="lesson-link">
+                                    <span class="lesson-icon"><i class="fas fa-file-alt"></i></span>
+                                    <span class="lesson-title">Liquidez y Solvencia</span>
+                                    <span class="lesson-duration">25 min</span>
+                                </a>
+                            </li>
+                            <li class="lesson-item">
+                                <a href="#" class="lesson-link quiz">
+                                    <span class="lesson-icon"><i class="fas fa-question-circle"></i></span>
+                                    <span class="lesson-title">Quiz - Análisis</span>
+                                    <span class="lesson-duration">15 min</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- Módulo 4 -->
+                    <li class="module-item">
+                        <div class="module-header">
+                            <div class="module-info">
+                                <span class="module-number">Módulo 4</span>
+                                <span class="module-title">Contabilidad para Decisiones</span>
+                            </div>
+                            <div class="module-status locked">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                        </div>
+                    </li>
+
+                    <!-- Módulo 5 -->
+                    <li class="module-item">
+                        <div class="module-header">
+                            <div class="module-info">
+                                <span class="module-number">Módulo 5</span>
+                                <span class="module-title">Evaluación Final</span>
+                            </div>
+                            <div class="module-status locked">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <main class="dashboard-content">
+        <!-- Navbar superior -->
+        <nav class="content-navbar">
+            <div class="navbar-left">
+                <button id="menuToggle" class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="lesson-navigation">
+                    <a href="#" class="nav-lesson prev">
+                        <i class="fas fa-chevron-left"></i>
+                        <span>Anterior</span>
+                    </a>
+                    <a href="#" class="nav-lesson next">
+                        <span>Siguiente</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="navbar-right">
+                <div class="navbar-item">
+                    <button class="navbar-button">
+                        <i class="far fa-comments"></i>
+                        <span class="badge">5</span>
+                    </button>
+                </div>
+                <div class="navbar-item">
+                    <button class="navbar-button">
+                        <i class="far fa-bookmark"></i>
+                    </button>
+                </div>
+                <div class="navbar-item">
+                    <div class="dropdown">
+                        <button class="dropdown-toggle">
+                            <div class="user-avatar small">
+                                <img src="{{ url_for('static', filename='img/avatars/default-avatar.png') }}"
+                                    alt="Avatar">
+                            </div>
+                            <span class="user-name-short">{{ user_name.split()[0] }}</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Contenido del curso -->
+        <div class="course-content-wrapper">
+            <!-- Ruta de navegación -->
+            <div class="content-breadcrumb">
+                <a href="{{ url_for('dashboard_estudiante') }}">Dashboard</a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="{{ url_for('cursos_estudiante') }}">Mis Cursos</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>{{ curso.titulo }}</span>
+                <i class="fas fa-chevron-right"></i>
+                <span>Módulo 3: Análisis Financiero</span>
+                <i class="fas fa-chevron-right"></i>
+                <span class="current-lesson">Rentabilidad</span>
+            </div>
+
+            <!-- Contenido de la lección -->
+            <div class="lesson-content">
+                <h1 class="lesson-title">Análisis de Rentabilidad</h1>
+                <div class="lesson-meta">
+                    <div class="meta-item">
+                        <i class="far fa-clock"></i>
+                        <span>30 minutos</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-signal"></i>
+                        <span>Intermedio</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Actualizado: Mayo 2025</span>
+                    </div>
+                </div>
+
+                <div class="video-container">
+                    <div class="video-placeholder">
+                        <i class="fas fa-play-circle"></i>
+                        <span>Haz clic para reproducir el video</span>
+                        <img src="{{ url_for('static', filename='img/courses/video-thumbnail.jpg') }}"
+                            alt="Video thumbnail">
+                    </div>
+                </div>
+
+                <div class="lesson-text">
+                    <h2>Introducción al Análisis de Rentabilidad</h2>
+                    <p>El análisis de rentabilidad es una de las herramientas más importantes para evaluar el desempeño
+                        económico de una empresa. Permite determinar si la empresa está generando suficientes beneficios
+                        en relación con los recursos invertidos.</p>
+
+                    <h3>Indicadores clave de rentabilidad</h3>
+                    <p>En esta lección aprenderemos sobre los principales indicadores de rentabilidad que toda empresa
+                        debe monitorear:</p>
+
+                    <ul class="lesson-list-items">
+                        <li>Margen de Beneficio Bruto</li>
+                        <li>Margen de Beneficio Operativo</li>
+                        <li>Margen de Beneficio Neto</li>
+                        <li>Retorno sobre Activos (ROA)</li>
+                        <li>Retorno sobre Capital (ROE)</li>
+                    </ul>
+
+                    <div class="info-box">
+                        <div class="info-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <div class="info-content">
+                            <h4>Dato importante</h4>
+                            <p>El ROE (Retorno sobre Capital) es uno de los indicadores más observados por los
+                                inversionistas, ya que mide directamente el rendimiento que obtienen por su inversión.
+                            </p>
+                        </div>
+                    </div>
+
+                    <h3>Cálculos básicos</h3>
+                    <p>A continuación veremos las fórmulas fundamentales para calcular estos indicadores:</p>
+
+                    <div class="formula-box">
+                        <p><strong>Margen de Beneficio Bruto</strong> = (Ingresos - Costo de Ventas) / Ingresos</p>
+                    </div>
+
+                    <div class="formula-box">
+                        <p><strong>Margen de Beneficio Neto</strong> = Beneficio Neto / Ingresos</p>
+                    </div>
+
+                    <div class="formula-box">
+                        <p><strong>ROA</strong> = Beneficio Neto / Activos Totales</p>
+                    </div>
+
+                    <div class="formula-box">
+                        <p><strong>ROE</strong> = Beneficio Neto / Patrimonio Neto</p>
+                    </div>
+
+                    <h3>Ejemplo práctico</h3>
+                    <p>Veamos un caso real para comprender mejor estos conceptos:</p>
+
+                    <div class="example-box">
+                        <h4>Caso: Empresa XYZ</h4>
+                        <p>Datos financieros del último año:</p>
+                        <ul>
+                            <li>Ingresos: $500,000</li>
+                            <li>Costo de Ventas: $300,000</li>
+                            <li>Gastos Operativos: $100,000</li>
+                            <li>Impuestos: $25,000</li>
+                            <li>Activos Totales: $800,000</li>
+                            <li>Patrimonio Neto: $400,000</li>
+                        </ul>
+                        <p>Con estos datos podemos calcular:</p>
+                        <ul>
+                            <li>Beneficio Bruto: $500,000 - $300,000 = $200,000</li>
+                            <li>Beneficio Operativo: $200,000 - $100,000 = $100,000</li>
+                            <li>Beneficio Neto: $100,000 - $25,000 = $75,000</li>
+                            <li>Margen de Beneficio Bruto: $200,000 / $500,000 = 40%</li>
+                            <li>Margen de Beneficio Neto: $75,000 / $500,000 = 15%</li>
+                            <li>ROA: $75,000 / $800,000 = 9.38%</li>
+                            <li>ROE: $75,000 / $400,000 = 18.75%</li>
+                        </ul>
+                    </div>
+
+                    <div class="action-box">
+                        <h4>Ejercicio práctico</h4>
+                        <p>Ahora es tu turno. Utiliza la siguiente calculadora para practicar:</p>
+                        <button class="btn-primary calculator-btn">
+                            <i class="fas fa-calculator"></i>
+                            <span>Abrir Calculadora de Rentabilidad</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="lesson-completion">
+                    <div class="completion-status">
+                        <div class="status-icon ongoing">
+                            <i class="fas fa-spinner fa-spin"></i>
+                        </div>
+                        <div class="status-text">
+                            <span>En progreso</span>
+                            <p>Has visto un 60% de esta lección</p>
+                        </div>
+                    </div>
+                    <button class="btn-primary mark-completed">
+                        <i class="fas fa-check"></i>
+                        <span>Marcar como completada</span>
+                    </button>
+                </div>
+
+                <div class="lesson-resources">
+                    <h3>Recursos adicionales</h3>
+                    <div class="resources-grid">
+                        <a href="#" class="resource-item">
+                            <i class="fas fa-file-pdf"></i>
+                            <span class="resource-name">Guía de Ratios Financieros</span>
+                            <span class="resource-info">PDF - 2.4 MB</span>
+                        </a>
+                        <a href="#" class="resource-item">
+                            <i class="fas fa-file-excel"></i>
+                            <span class="resource-name">Calculadora de Indicadores</span>
+                            <span class="resource-info">Excel - 1.8 MB</span>
+                        </a>
+                        <a href="#" class="resource-item">
+                            <i class="fas fa-external-link-alt"></i>
+                            <span class="resource-name">Lecturas complementarias</span>
+                            <span class="resource-info">Enlace externo</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="lesson-navigation-bottom">
+                    <a href="#" class="nav-btn prev">
+                        <i class="fas fa-arrow-left"></i>
+                        <div class="nav-text">
+                            <span class="nav-direction">Anterior</span>
+                            <span class="nav-title">Indicadores Financieros</span>
+                        </div>
+                    </a>
+                    <a href="#" class="nav-btn next">
+                        <div class="nav-text">
+                            <span class="nav-direction">Siguiente</span>
+                            <span class="nav-title">Liquidez y Solvencia</span>
+                        </div>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Barra lateral de contenidos -->
+            <div class="content-sidebar">
+                <div class="content-sidebar-header">
+                    <h3>Contenido de la lección</h3>
+                </div>
+                <div class="content-sidebar-body">
+                    <ul class="content-list">
+                        <li class="content-item viewed">
+                            <a href="#" class="content-link">
+                                <span class="content-text">Introducción al Análisis de Rentabilidad</span>
+                                <i class="fas fa-check"></i>
+                            </a>
+                        </li>
+                        <li class="content-item viewed">
+                            <a href="#" class="content-link">
+                                <span class="content-text">Indicadores clave de rentabilidad</span>
+                                <i class="fas fa-check"></i>
+                            </a>
+                        </li>
+                        <li class="content-item active">
+                            <a href="#" class="content-link">
+                                <span class="content-text">Cálculos básicos</span>
+                                <i class="fas fa-circle"></i>
+                            </a>
+                        </li>
+                        <li class="content-item">
+                            <a href="#" class="content-link">
+                                <span class="content-text">Ejemplo práctico</span>
+                            </a>
+                        </li>
+                        <li class="content-item">
+                            <a href="#" class="content-link">
+                                <span class="content-text">Ejercicio práctico</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="content-sidebar-footer">
+                    <h4>¿Necesitas ayuda?</h4>
+                    <a href="#" class="btn-outline-sm full-width">
+                        <i class="fas fa-question-circle"></i>
+                        <span>Contactar tutor</span>
+                    </a>
+                    <a href="#" class="btn-outline-sm full-width">
+                        <i class="fas fa-comments"></i>
+                        <span>Foro del curso</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Toggle sidebar
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const menuToggle = document.getElementById('menuToggle');
+        const body = document.body;
+
+        function toggleSidebar() {
+            body.classList.toggle('sidebar-collapsed');
+        }
+
+        sidebarToggle.addEventListener('click', toggleSidebar);
+        menuToggle.addEventListener('click', toggleSidebar);
+
+        // Toggle module expansion
+        document.addEventListener('DOMContentLoaded', function () {
+            const moduleHeaders = document.querySelectorAll('.module-header');
+
+            moduleHeaders.forEach(header => {
+                header.addEventListener('click', function () {
+                    // Solo si no está bloqueado
+                    if (!header.querySelector('.locked')) {
+                        const moduleItem = this.parentElement;
+                        moduleItem.classList.toggle('expanded');
+                    }
+                });
+            });
+
+            // Marcar lección como completada
+            const completeButton = document.querySelector('.mark-completed');
+            if (completeButton) {
+                completeButton.addEventListener('click', function () {
+                    const completionStatus = document.querySelector('.completion-status');
+                    const statusIcon = document.querySelector('.status-icon');
+                    const statusText = document.querySelector('.status-text span');
+                    const statusDetail = document.querySelector('.status-text p');
+
+                    statusIcon.classList.remove('ongoing');
+                    statusIcon.classList.add('completed');
+                    statusIcon.innerHTML = '<i class="fas fa-check"></i>';
+                    statusText.textContent = 'Completado';
+                    statusDetail.textContent = 'Has completado esta lección';
+
+                    completeButton.disabled = true;
+                    completeButton.innerHTML = '<i class="fas fa-check"></i><span>Completado</span>';
+
+                    // Actualizar la lección activa en el menú
+                    const activeLesson = document.querySelector('.lesson-item.active');
+                    if (activeLesson) {
+                        activeLesson.classList.add('completed');
+                    }
+                });
+            }
+
+            // Simulación del video
+            const videoPlaceholder = document.querySelector('.video-placeholder');
+            if (videoPlaceholder) {
+                videoPlaceholder.addEventListener('click', function () {
+                    this.innerHTML = '<iframe width="100%" height="100%" src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+
+{% endblock content_bot %}
+

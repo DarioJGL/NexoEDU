@@ -1,0 +1,308 @@
+{% extends "base.html" %}
+{% block content_bot %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexoEDU - Conectando la educación con tu futuro</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- Navegación -->
+    <nav class="auth-nav">
+        <div class="nav-container">
+            <a href="#" class="nav-brand">NexoEDU</a>
+
+            <!-- Toggle para móvil -->
+            <div class="nav-toggle" id="navToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <div class="nav-links" id="navLinks">
+                <a href="{{ url_for('login') }}" class="nav-link">Iniciar Sesión</a>
+                <a href="{{ url_for('register') }}" class="nav-link nav-register">Crear Cuenta</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sección Hero -->
+    <section class="hero-section">
+        <div class="hero-overlay"></div>
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="hero-title">
+                        Complementa tu educación
+                        <span class="highlight">más allá del aula</span>
+                    </h1>
+                    <p class="hero-description">
+                        Desarrolla habilidades digitales, financieras y emprendedoras que te prepararán
+                        para el mundo laboral y personal. Educación práctica y relevante para bachilleres
+                        colombianos.
+                    </p>
+                    <div class="hero-actions">
+                        <a href="#" class="btn-primary">Explorar Cursos</a>
+                        <a href="#about" class="btn-secondary">Conocer más</a>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="floating-cards">
+                        <div class="course-card">
+                            <i class="fas fa-laptop-code"></i>
+                            <span>Programación</span>
+                        </div>
+                        <div class="course-card">
+                            <i class="fas fa-coins"></i>
+                            <span>Finanzas</span>
+                        </div>
+                        <div class="course-card">
+                            <i class="fas fa-lightbulb"></i>
+                            <span>Emprendimiento</span>
+                        </div>
+                        <div class="course-card">
+                            <i class="fas fa-users"></i>
+                            <span>Habilidades Blandas</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Acerca de -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>¿Qué es NexoEDU?</h2>
+                <p>Una plataforma diseñada para complementar tu educación formal con competencias prácticas</p>
+            </div>
+
+            <div class="grid-auto">
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3>Educación Complementaria</h3>
+                    <p>Cursos diseñados para llenar los vacíos de la educación formal con habilidades prácticas para la
+                        vida real.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-globe-americas"></i>
+                    </div>
+                    <h3>Acceso Inclusivo</h3>
+                    <p>Especialmente diseñado para estudiantes de bachillerato en Colombia con enfoque en la equidad
+                        educativa.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Preparación Laboral</h3>
+                    <p>Desarrolla competencias digitales, financieras y emprendedoras demandadas en el mercado laboral
+                        actual.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Cursos -->
+    <section class="courses-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Nuestros Cursos</h2>
+                <p>Seis áreas fundamentales para tu desarrollo integral</p>
+            </div>
+
+            <div class="grid-courses">
+                <div class="course-item">
+                    <div class="course-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3>Programación Básica</h3>
+                    <p>Aprende los fundamentos de la programación y desarrolla tu pensamiento lógico.</p>
+                </div>
+
+                <div class="course-item">
+                    <div class="course-icon">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <h3>Educación Financiera</h3>
+                    <p>Maneja tu dinero inteligentemente y planifica tu futuro económico.</p>
+                </div>
+
+                <div class="course-item">
+                    <div class="course-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3>Emprendimiento</h3>
+                    <p>Desarrolla tu espíritu empresarial y aprende a crear tu propio proyecto.</p>
+                </div>
+
+                <div class="course-item">
+                    <div class="course-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3>Habilidades Blandas</h3>
+                    <p>Mejora tu comunicación, liderazgo y trabajo en equipo.</p>
+                </div>
+
+                <div class="course-item">
+                    <div class="course-icon">
+                        <i class="fas fa-digital-tachograph"></i>
+                    </div>
+                    <h3>Competencias Digitales</h3>
+                    <p>Domina las herramientas tecnológicas esenciales del siglo XXI.</p>
+                </div>
+
+                <div class="course-item">
+                    <div class="course-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Desarrollo Personal</h3>
+                    <p>Fortalece tu autoestima, inteligencia emocional y habilidades sociales.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Estadísticas -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="grid-stats">
+                <div class="stat-item">
+                    <div class="stat-number">9</div>
+                    <div class="stat-label">Cursos Disponibles</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">3+</div>
+                    <div class="stat-label">Colegios Aliados</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Enfoque Práctico</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">∞</div>
+                    <div class="stat-label">Oportunidades</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>¿Listo para transformar tu futuro?</h2>
+                <p>Únete a NexoEDU y accede a una educación que realmente te prepara para el mundo real</p>
+                <div class="cta-actions">
+                    <a href="#" class="btn-primary">Comenzar Ahora</a>
+                    <a href="#" class="btn-secondary">Ver Demo</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>NexoEDU</h3>
+                    <p>Conectando la educación con el futuro laboral de los jóvenes colombianos.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="link-group">
+                        <h4>Plataforma</h4>
+                        <a href="#">Cursos</a>
+                        <a href="#">Instituciones</a>
+                        <a href="#">Estudiantes</a>
+                    </div>
+                    <div class="link-group">
+                        <h4>Soporte</h4>
+                        <a href="#">Ayuda</a>
+                        <a href="#">Contacto</a>
+                        <a href="#">FAQ</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 NexoEDU. Desarrollado con pasión para la educación colombiana.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Toggle navegación móvil
+        const navToggle = document.getElementById('navToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        navToggle.addEventListener('click', () => {
+            navToggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        // Smooth scrolling para enlaces internos
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Animaciones al hacer scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate');
+                }
+            });
+        }, observerOptions);
+
+        // Observar elementos para animación
+        document.querySelectorAll('.course-item, .card, .stat-item').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Efecto scroll en navegación
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('.auth-nav');
+            if (window.scrollY > 100) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+
+</html>
+{% endblock %}

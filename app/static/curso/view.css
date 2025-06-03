@@ -1,0 +1,391 @@
+/* Variables CSS (hereda de base.css) */
+:root {
+    --primary-blue: #0ea5e9;
+    --primary-dark: #0284c7;
+    --secondary-blue: #38bdf8;
+    --accent-green: #10b981;
+    --dark-blue: #0f172a;
+    --gray-dark: #1e293b;
+    --gray-light: #f8fafc;
+    --white: #ffffff;
+    --text-primary: #1f2937;
+    --text-secondary: #6b7280;
+    --border-light: #e5e7eb;
+    --danger-red: #ef4444;
+    --warning-orange: #f59e0b;
+    --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para la vista de lista de cursos */
+
+/* Personalización de la tabla */
+.table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+}
+
+.table thead th {
+    background: linear-gradient(135deg, var(--gray-light), #f1f5f9);
+    color: var(--text-primary);
+    font-weight: 600;
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 2px solid var(--primary-blue);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.table tbody td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-light);
+    vertical-align: middle;
+}
+
+.table tbody tr:hover {
+    background-color: rgba(14, 165, 233, 0.05);
+}
+
+/* Contenedor principal */
+.course-list-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.page-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.add-course-button .btn {
+    background: linear-gradient(135deg, var(--primary-blue), var(--primary-dark));
+    color: var(--white);
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.add-course-button .btn:hover {
+    background: linear-gradient(135deg, var(--primary-dark), var(--dark-blue));
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(14, 165, 233, 0.4);
+}
+
+/* Filtros de cursos */
+.filter-container {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background-color: var(--gray-light);
+    border-radius: 12px;
+    border: 1px solid var(--border-light);
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.filter-container .form-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.filter-container label {
+    font-weight: 600;
+    margin-bottom: 0;
+    color: var(--text-primary);
+    min-width: 120px;
+}
+
+.filter-container select {
+    padding: 0.5rem;
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    flex: 1;
+    min-width: 200px;
+}
+
+/* Estilos para las celdas de la tabla */
+.course-title-cell {
+    min-width: 200px;
+}
+
+.course-title-cell strong {
+    color: var(--text-primary);
+    font-weight: 600;
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.course-description {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+/* Columna de categoría más ancha */
+.table th:nth-child(3),
+.table td:nth-child(3) {
+    width: 150px;
+    min-width: 150px;
+}
+
+/* Badges y etiquetas */
+.category-badge {
+    background-color: var(--primary-blue);
+    color: var(--white);
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.difficulty-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.difficulty-básico {
+    background-color: #10b981;
+    color: var(--white);
+}
+
+.difficulty-intermedio {
+    background-color: var(--warning-orange);
+    color: var(--white);
+}
+
+.difficulty-avanzado {
+    background-color: var(--danger-red);
+    color: var(--white);
+}
+
+.status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-active {
+    background-color: #10b981;
+    color: var(--white);
+}
+
+.status-inactive {
+    background-color: #6b7280;
+    color: var(--white);
+}
+
+/* Botones de acción */
+.actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.btn-sm {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
+    border-radius: 6px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-warning {
+    background-color: var(--warning-orange);
+    color: var(--white);
+}
+
+.btn-warning:hover {
+    background-color: #d97706;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+}
+
+.btn-danger {
+    background-color: var(--danger-red);
+    color: var(--white);
+}
+
+.btn-danger:hover {
+    background-color: #dc2626;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+}
+
+/* Estado vacío */
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    background-color: var(--gray-light);
+    border-radius: 12px;
+    border: 2px dashed var(--border-light);
+}
+
+.empty-icon {
+    font-size: 4rem;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+.empty-state h3 {
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+}
+
+.empty-state .btn {
+    background: linear-gradient(135deg, var(--primary-blue), var(--primary-dark));
+    color: var(--white);
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.empty-state .btn:hover {
+    background: linear-gradient(135deg, var(--primary-dark), var(--dark-blue));
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(14, 165, 233, 0.4);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .course-list-container {
+        padding: 1rem;
+    }
+
+    .header-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .page-title {
+        font-size: 1.5rem;
+        text-align: center;
+    }
+
+    .filter-container {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .filter-container .form-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filter-container label {
+        min-width: auto;
+    }
+
+    .filter-container select {
+        min-width: auto;
+    }
+
+    .table {
+        font-size: 0.85rem;
+    }
+
+    .table thead th,
+    .table tbody td {
+        padding: 0.5rem;
+    }
+
+    .course-title-cell {
+        min-width: 150px;
+    }
+
+    /* Mantener ancho de categoría en móviles */
+    .table th:nth-child(3),
+    .table td:nth-child(3) {
+        width: 120px;
+        min-width: 120px;
+    }
+
+    .actions {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .empty-state {
+        padding: 2rem 1rem;
+    }
+
+    .empty-icon {
+        font-size: 3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .table thead {
+        display: none;
+    }
+
+    .table tbody tr {
+        display: block;
+        margin-bottom: 1rem;
+        border: 1px solid var(--border-light);
+        border-radius: 8px;
+        background-color: var(--white);
+        box-shadow: var(--card-shadow);
+    }
+
+    .table tbody td {
+        display: block;
+        padding: 0.5rem 1rem;
+        border: none;
+        border-bottom: 1px solid var(--border-light);
+    }
+
+    .table tbody td:last-child {
+        border-bottom: none;
+    }
+
+    .table tbody td:before {
+        content: attr(data-label) ": ";
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+}

@@ -1,0 +1,29 @@
+{% extends "admin_general/base.html" %}
+
+{% block title %}Gestión de Cursos - NexoEDU{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='curso/index.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="course-management-container">
+    <h1 class="">Gestión de Cursos</h1>
+
+    <div>
+        <div>
+            <a href="{{ url_for('curso_create') }}" class="btn btn-primary mb-3">
+                <i class="fas fa-plus"></i> Agregar Curso</a>
+        </div>
+
+        <!-- Ver Lista de Cursos -->
+        <div>
+            <a href="{{ url_for('curso_list') }}" class="btn btn-primary mb-3">
+                <i class="fas fa-list"></i> Ver Lista de Cursos
+            </a>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}
