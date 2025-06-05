@@ -946,7 +946,7 @@ def usuario_create():
                     user_email=user_email,
                 )
 
-            cursor = conexion.cursor()
+            cursor = conexion.cursor(dictionary=True)
 
             # Verificar si el email ya existe
             cursor.execute("SELECT id_usuario FROM USUARIO WHERE email = %s", (email,))
@@ -999,7 +999,8 @@ def usuario_create():
             conexion.commit()
 
             # Obtener el ID del usuario recién creado
-            user_id = cursor.lastrowid
+            
+            
 
             cursor.close()
             conexion.close()
